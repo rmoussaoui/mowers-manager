@@ -58,3 +58,16 @@ On attend le résultat suivant (position finale des tondeuses) :
 
 **NB:** Les données en entrée sont injectées sous forme de fichier.
 
+## Solution:
+L'application est construite sous une architecture hexagonale:  
+* **application:**
+Partie par laquelle le programme interagit avec l'application.  
+* **domaine:**
+Contient la logique métier de l'application.
+* **infrastructure:**
+Partie pilotée par le domaine et qui contient ce dont a besoin l'application pour fonctionner, notamment l'accés aux données.
+
+
+
+
+
