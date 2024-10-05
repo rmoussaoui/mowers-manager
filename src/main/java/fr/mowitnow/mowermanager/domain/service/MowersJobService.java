@@ -44,7 +44,7 @@ public class MowersJobService {
         }
 
         Lawn lawn = job.lawn();
-        job.mowerJobs().parallelStream().forEach(mowerInfosEntry ->
+        job.mowerJobs().stream().forEach(mowerInfosEntry ->
                 mowerInfosEntry.mower().executerInstructions(mowerInfosEntry.instructions(), lawn));
 
         return job.mowerJobs().stream().map(MowerJob::mower).toList();
