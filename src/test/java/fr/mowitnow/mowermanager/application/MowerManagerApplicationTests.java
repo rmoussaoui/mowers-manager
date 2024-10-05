@@ -23,7 +23,7 @@ class MowerManagerApplicationTests {
 	}
 
 	@Test
-	void contextLoads() {
+	void checkJobResults() {
 		MowerManagerApplication.main(new String[]{});
 		assertThat(outputStreamCaptor.toString().trim()).contains("2 3 W", "5 5 E");
 	}
