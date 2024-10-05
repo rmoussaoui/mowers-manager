@@ -26,6 +26,34 @@ public class ArchiTest {
         domainRule.check(classes);
     }
 
+     /**
+     * les classes de infrastructure peut être accédées par le domaine et infrastructure
+     * @param classes les classes à analyser
+     */
+    @ArchTest
+    void checkInfrastructureAccessRule(JavaClasses classes) {
+
+        ArchRule domainRule = classes()
+                .that().resideInAPackage("..infrastructure..")
+                .should().onlyBeAccessed().byAnyPackage("..domain..", "..infrastructure..");
+
+        domainRule.check(classes);
+    }
+
+    /**
+     * les classes de application peut être accédées par le domaine et application
+     * @param classes les classes à analyser
+     */
+    @ArchTest
+    void checkApplicationAccessRule(JavaClasses classes) {
+
+        ArchRule domainRule = classes()
+                .that().resideInAPackage("..application..")
+                .should().onlyBeAccessed().byAnyPackage("..domain..", "..application..");
+
+        domainRule.check(classes);
+    }
+
     /**
      * Le user side (application) ne doit pas être accédé par une autre couche
      * Le server side n'est accédé que par le domaine
