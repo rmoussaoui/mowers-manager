@@ -1,4 +1,4 @@
-package fr.mowitnow.mowermanager.model;
+package fr.mowitnow.mowermanager.domain;
 
 import fr.mowitnow.mowermanager.domain.exceptions.TechnicalException;
 import fr.mowitnow.mowermanager.domain.model.JobInfos;

@@ -1,4 +1,4 @@
-package fr.mowitnow.mowermanager.model;
+package fr.mowitnow.mowermanager.domain;
 
 import fr.mowitnow.mowermanager.domain.model.entities.Coordinates;
 import fr.mowitnow.mowermanager.domain.model.entities.Lawn;
