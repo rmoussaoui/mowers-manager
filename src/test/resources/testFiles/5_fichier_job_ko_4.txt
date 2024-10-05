@@ -1,0 +1,3 @@
+5 5
+1 P U
+GAGAGAGA
