@@ -33,11 +33,12 @@ public class MowerJobSubscriber extends SubmissionPublisher<Mower> implements Fl
     @Override
     public void onError(Throwable throwable) {
         LOGGER.error("Une erreur est survenue");
+        throwable.printStackTrace();
     }
 
     @Override
     public void onComplete() {
-        LOGGER.debug("Une tondeuse a terminé son job");
+        close();
     }
 
 }

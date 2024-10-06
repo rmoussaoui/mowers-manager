@@ -59,6 +59,8 @@ public class ReactiveMowerJobFetcherAdapter implements ReactiveMowerJobFetcherPo
                 publisher.submit(job);
             }
 
+            publisher.close();
+
         } catch (FileNotFoundException e) {
             LOGGER.error("Fichier {} introuvable", jobFilePath);
             throw new TechnicalException("Fichier [" + jobFilePath + "] introuvable", e);

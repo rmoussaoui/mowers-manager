@@ -45,15 +45,16 @@ public class MowerManagerApplication implements CommandLineRunner {
 
 		// Execute un job de tondeuses et écrit
 		// la positionnement de chaque tondeuse
+		LOGGER.info("Execution du job en mode: {}", executionType);
+
 		if (MODE_REACTIF.equals(executionType)) {
-			LOGGER.info("Execution du programme en mode reactif");
 			reactiveMowerJobLauncherPort.lauchMowersJob();
 		}
 		else {
-			LOGGER.info("Execution du programme en mode impératif");
 			mowersJobLauncherPort.lauchMowersJob().stream()
 					.map(MowerMapper::toMowerDto)
 					.forEach(m -> resultPrinter.printResult(m));
+			LOGGER.info("Job terminé");
 		}
 	}
 }

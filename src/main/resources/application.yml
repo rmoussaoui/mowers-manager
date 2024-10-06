@@ -4,6 +4,6 @@ spring:
 job:
   file.path: /tmp/tondeusesJob.txt
   ##reactif / imperatif
-  execution.type: imperatif
+  execution.type: reactif
 
 

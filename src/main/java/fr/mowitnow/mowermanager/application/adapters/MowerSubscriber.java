@@ -38,11 +38,13 @@ public class MowerSubscriber implements Flow.Subscriber<Mower> {
 
     @Override
     public void onError(Throwable throwable) {
-        LOGGER.error("Une erreur est survenue: {}", throwable);
+        LOGGER.error("Une erreur est survenue");
+        throwable.printStackTrace();
     }
 
     @Override
     public void onComplete() {
-        LOGGER.debug("Une tondeuse a été affichée");
+        //Nothing
+        LOGGER.info("Job terminé");
     }
 }
