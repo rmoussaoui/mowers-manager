@@ -37,9 +37,6 @@ public class MowersJobService {
         }
         catch(TechnicalException ex) {
             LOGGER.error("Erreur lors de la lecture du job", ex);
-        }
-
-        if (null == job) {
             return Collections.emptyList();
         }
 
