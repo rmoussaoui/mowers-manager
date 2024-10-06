@@ -73,6 +73,7 @@ public class MowersJobFetcherAdapter implements MowersJobFetcherPort {
                 return mowerInfosEntries;
             }
             mowerInfosEntries.add(optMowerInfosEntry.get());
+            currentMowerId++;
         }
     }
 

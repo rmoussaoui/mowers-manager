@@ -57,6 +57,7 @@ public class ReactiveMowerJobFetcherAdapter implements ReactiveMowerJobFetcherPo
                 MowerJobOnLawn job = new MowerJobOnLawn(optMowerInfosEntry.get(), lawn);
                 LOGGER.debug("Un job a été trouvé: {}", job);
                 publisher.submit(job);
+                currentMowerId++;
             }
 
             publisher.close();

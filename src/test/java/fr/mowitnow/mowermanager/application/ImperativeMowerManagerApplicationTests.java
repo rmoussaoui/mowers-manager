@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class MowerManagerApplicationTests {
+class ImperativeMowerManagerApplicationTests {
 
 	private final PrintStream standardOut = System.out;
 	private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
@@ -24,8 +24,8 @@ class MowerManagerApplicationTests {
 
 	@Test
 	void checkJobResults() {
+		System.setProperty("job.execution.type", "imperatif");
 		MowerManagerApplication.main(new String[]{});
 		assertThat(outputStreamCaptor.toString().trim()).contains("2 3 W", "5 5 E");
 	}
-
 }

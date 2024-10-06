@@ -1,1 +1,3 @@
-job.file.path: ./src/test/resources/testJobFile.txt
+job:
+  file.path: ./src/test/resources/testJobFile.txt
+  execution.type: imperatif
