@@ -1,18 +1,18 @@
 package fr.mowitnow.mowermanager.infrastructure.adapters;
 
+import fr.mowitnow.mowermanager.domain.MowerJobSubscriber;
 import fr.mowitnow.mowermanager.domain.exceptions.BusinessException;
 import fr.mowitnow.mowermanager.domain.exceptions.TechnicalException;
-import fr.mowitnow.mowermanager.domain.model.JobInfos;
 import fr.mowitnow.mowermanager.domain.model.MowerJob;
+import fr.mowitnow.mowermanager.domain.model.MowerJobOnLawn;
 import fr.mowitnow.mowermanager.domain.model.entities.Lawn;
 import fr.mowitnow.mowermanager.domain.model.entities.Mower;
 import fr.mowitnow.mowermanager.domain.model.type.Instruction;
-import fr.mowitnow.mowermanager.domain.ports.MowersJobFetcherPort;
+import fr.mowitnow.mowermanager.domain.ports.ReactiveMowerJobFetcherPort;
 import fr.mowitnow.mowermanager.infrastructure.LineParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -22,28 +22,42 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.SubmissionPublisher;
 
 @Component
-public class MowersJobFetcherAdapter implements MowersJobFetcherPort {
+public class ReactiveMowerJobFetcherAdapter implements ReactiveMowerJobFetcherPort {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MowersJobFetcherAdapter.class);
 
     private final String jobFilePath;
 
-    public MowersJobFetcherAdapter(@Value("${job.file.path}") String jobFilePath) {
+    SubmissionPublisher<MowerJobOnLawn> publisher;
+
+    public ReactiveMowerJobFetcherAdapter(@Value("${job.file.path}") String jobFilePath) {
         this.jobFilePath = jobFilePath;
+        this.publisher = new SubmissionPublisher<MowerJobOnLawn>();
     }
 
-    @Override
-    public JobInfos getJobInfos() throws TechnicalException {
+    public void getJobInfos(MowerJobSubscriber subscriber) throws TechnicalException {
+
+        publisher.subscribe(subscriber);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(jobFilePath))) {
 
             Lawn lawn = processLawnLine(reader);
 
-            List<MowerJob> mowerInfosEntries = processMowersLines(reader);
+            int currentMowerId = 1;
 
-            return new JobInfos(lawn, mowerInfosEntries);
+            //Read until mower is not found
+            while (true) {
+                Optional<MowerJob> optMowerInfosEntry = readNextMowerInfos(currentMowerId, reader);
+                if(optMowerInfosEntry.isEmpty()) {
+                    break;
+                }
+                MowerJobOnLawn job = new MowerJobOnLawn(optMowerInfosEntry.get(), lawn);
+                LOGGER.debug("Un job a été trouvé: {}", job);
+                publisher.submit(job);
+            }
 
         } catch (FileNotFoundException e) {
             LOGGER.error("Fichier {} introuvable", jobFilePath);
@@ -54,26 +68,13 @@ public class MowersJobFetcherAdapter implements MowersJobFetcherPort {
         }
     }
 
+
     private  Lawn processLawnLine(BufferedReader reader) throws IOException {
         String line = reader.readLine();
         if (null == line) {
             throw new BusinessException("Informations pelouse introuvables");
         }
         return LineParser.parseLawnInfos(line);
-    }
-
-    private List<MowerJob> processMowersLines(BufferedReader reader) throws IOException {
-        List<MowerJob> mowerInfosEntries = new ArrayList<>();
-        int currentMowerId = 1;
-
-        //Read until mower is not found
-        while (true) {
-            Optional<MowerJob> optMowerInfosEntry = readNextMowerInfos(currentMowerId, reader);
-            if(optMowerInfosEntry.isEmpty()) {
-                return mowerInfosEntries;
-            }
-            mowerInfosEntries.add(optMowerInfosEntry.get());
-        }
     }
 
     private Optional<MowerJob> readNextMowerInfos(int currentMowerId, BufferedReader reader) throws IOException {
@@ -88,5 +89,6 @@ public class MowersJobFetcherAdapter implements MowersJobFetcherPort {
         }
         return Optional.empty();
     }
+
 
 }

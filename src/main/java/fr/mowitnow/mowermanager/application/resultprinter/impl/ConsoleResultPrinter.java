@@ -10,13 +10,11 @@ import java.util.List;
 public class ConsoleResultPrinter implements ResultPrinter {
 
     @Override
-    public void printResult(List<MowerDto> mowers) {
-        mowers.stream().forEach(mower ->
-                System.out.println("" + mower.position().x()
-                        + " "
-                        + mower.position().y()
-                        + " "
-                        + mower.position().orientation())
-        );
+    public void printResult(MowerDto mower) {
+        System.out.println("" + mower.position().x()
+                + " "
+                + mower.position().y()
+                + " "
+                + mower.position().orientation());
     }
 }

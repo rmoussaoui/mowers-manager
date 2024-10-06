@@ -7,8 +7,8 @@ import java.util.List;;
 public interface ResultPrinter {
 
     /**
-     * Print the final position of mowers
-     * @param mowers
+     *
+     * @param mower
      */
-    void printResult(List<MowerDto> mowers);
+    void printResult(MowerDto mower);
 }

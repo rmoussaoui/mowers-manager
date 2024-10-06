@@ -1,2 +1,9 @@
-spring.application.name: mowermanager
-job.file.path: /tmp/tondeusesJob.txt
+spring:
+  application.name: mowermanager
+  profiles.active: reactive
+job:
+  file.path: /tmp/tondeusesJob.txt
+  ##reactif / imperatif
+  execution.type: imperatif
+
+

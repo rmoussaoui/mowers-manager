@@ -67,6 +67,18 @@ Contient la logique métier de l'application.
 * **infrastructure:**
 Partie pilotée par le domaine et qui contient ce dont a besoin l'application pour fonctionner, notamment l'accés aux données.
 
+L'application peut être executée en mode impératif ou reactif selon la variable de configuration **job.execution.type**  
+
+Le mode impératif est préférable pour des fichiers d'entrée de taille modeste.  
+
+En cas de fichier volumineux et vu le risque de saturation mémoire, le mode reactif peut être utilisé.  
+Il permet de lire le fichier, puis, pour chaque job lu (tondeuse + suite d'instructions), la publication du job pour execution.
+Un abonné lance l'execution du job puis publie à son tour le résultat.  
+Enfin, un abonné reçoit le résultat du job et l'affiche.
+
+
+
+
 
 
 
